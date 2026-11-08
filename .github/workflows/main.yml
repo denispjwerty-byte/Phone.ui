@@ -9,11 +9,9 @@ jobs:
         run: |
           ls -la
           mkdir -p project
-          unzip -oq LiquidGlassLauncher-debug.zip -d project
-          echo "--- содержимое архива ---"
-          find project -maxdepth 3 | head -40
+          unzip -oq "$(ls *.zip | head -1)" -d project
           F=$(find project -name 'settings.gradle*' | head -1)
-          if [ -z "$F" ]; then echo "::error::В архиве нет settings.gradle(.kts) — загружен не тот zip"; exit 1; fi
+          if [ -z "$F" ]; then echo "::error::В архиве нет settings.gradle(.kts)"; exit 1; fi
           echo "PROJ=$(dirname "$F")" >> $GITHUB_ENV
       - uses: actions/setup-java@v4
         with: { distribution: temurin, java-version: 17 }
